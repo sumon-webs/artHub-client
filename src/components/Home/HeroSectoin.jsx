@@ -2,6 +2,7 @@
 
 import { Button } from "@heroui/react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function HeroSection() {
   return (
@@ -55,17 +56,19 @@ export default function HeroSection() {
           transition={{ delay: 0.4, duration: 0.6 }}
           className="mt-8"
         >
-          <Button
-            size="lg"
-            className="
+          <Link href={'/browse-arts'}>
+            <Button
+              size="lg"
+              className="
               bg-purple-500 text-white 
               hover:bg-purple-600 
               dark:bg-purple-500 dark:hover:bg-purple-600 
               px-8 py-6 text-lg rounded-2xl
             "
-          >
-            Browse Artworks
-          </Button>
+            >
+              Browse Artworks
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>
