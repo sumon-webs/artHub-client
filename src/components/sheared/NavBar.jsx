@@ -1,0 +1,116 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { Menu, X, Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
+import Image from "next/image";
+
+const navLinks = [
+  { name: "Home", href: "/" },
+  { name: "Browse Arts", href: "/browse-arts" },
+];
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <nav className="border-b bg-white dark:bg-zinc-950 dark:border-zinc-800">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo */}
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-2xl font-bold text-black dark:text-white"
+          >
+            <Image
+              src="/ah.png"
+              alt="ArtHub Logo"
+              width={32}
+              height={32}
+              className="rounded-md"
+              priority
+            />
+            ArtHub
+          </Link>
+
+          {/* Desktop Menu */}
+          <div className="hidden items-center gap-6 md:flex">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="font-medium text-gray-700 transition hover:text-black dark:text-gray-300 dark:hover:text-white"
+              >
+                {link.name}
+              </Link>
+            ))}
+
+            {/* Theme Toggle */}
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-zinc-800"
+            >
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+
+            {/* Sign In */}
+            <Link
+              href="/signin"
+              className="rounded-lg bg-black px-4 py-2 text-white transition hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+            >
+              Sign In
+            </Link>
+          </div>
+
+          {/* Mobile Button */}
+          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {isOpen && (
+          <div className="space-y-4 border-t py-4 md:hidden dark:border-zinc-800">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="block text-gray-700 dark:text-gray-300"
+                onClick={() => setIsOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
+
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="flex items-center gap-2"
+            >
+              {theme === "dark" ? (
+                <>
+                  <Sun size={18} />
+                  Light Mode
+                </>
+              ) : (
+                <>
+                  <Moon size={18} />
+                  Dark Mode
+                </>
+              )}
+            </button>
+
+            <Link
+              href="/signin"
+              className="block rounded-lg bg-black px-4 py-2 text-center text-white dark:bg-white dark:text-black"
+              onClick={() => setIsOpen(false)}
+            >
+              Sign In
+            </Link>
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+}

@@ -1,10 +1,9 @@
-import { ThemeSwitch } from '@/components/ThemeSwitch'
-import React from 'react'
+import HeroSection from "@/components/Home/HeroSectoin"
 
 const Home = () => {
   return (
     <div>
-      <ThemeSwitch/>
+      <HeroSection/>
     </div>
   )
 }
