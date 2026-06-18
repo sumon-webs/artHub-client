@@ -2,10 +2,20 @@
 
 import { fetchServer } from "../core/fetchServer";
 
-export const getArtWorks = async (artistId = "") => {
-  const endpoint = artistId
-    ? `/api/artworks?artistId=${artistId}`
-    : `/api/artworks`;
+export const getArtWorks = async ({
+  artistId = "",
+  category = "",
+  search = "",
+  sortByPrice = "",
+} = {}) => {
+  const params = new URLSearchParams();
+
+  if (artistId) params.append("artistId", artistId);
+  if (category && category !== "all") params.append("category", category);
+  if (search) params.append("search", search);
+  if (sortByPrice) params.append("sortByPrice", sortByPrice);
+
+  const endpoint = `/api/artworks?${params.toString()}`;
 
   const res = await fetchServer({
     endpoint,
