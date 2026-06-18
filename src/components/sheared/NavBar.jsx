@@ -8,7 +8,7 @@ import Image from "next/image";
 import { ThemeSwitch } from "../ThemeSwitch";
 import { authClient } from "@/lib/auth-client";
 
-const baseLinks = [
+const navLinks = [
   { name: "Home", href: "/" },
   { name: "Browse Arts", href: "/browse-arts" },
 ];
@@ -19,7 +19,6 @@ export default function Navbar() {
 
   const { data: session } = authClient.useSession();
   const user = session?.user;
-  console.log(user);
   const handleLogout = async () => {
     try {
       await authClient.signOut(); // যদি তোমার lib এ নাম আলাদা হয় adjust করবে
@@ -28,10 +27,16 @@ export default function Navbar() {
     }
   };
 
-  // user থাকলে Dashboard add হবে
-  const navLinks = user
-    ? [...baseLinks, { name: "Dashboard", href: "/dashboard" }]
-    : baseLinks;
+  const dashboardLink =
+    user?.role === "admin"
+      ? { name: "Dashboard", href: "/dashboard/admin" }
+      : user?.role === "artist"
+        ? { name: "Dashboard", href: "/dashboard/artist" }
+        : user?.role === "buyer"
+          ? { name: "Dashboard", href: "/dashboard/buyer" }
+          : null;
+
+  const links = dashboardLink ? [...navLinks, dashboardLink] : navLinks;
 
   return (
     <nav className="border-b bg-white dark:bg-zinc-950 dark:border-zinc-800">
@@ -55,7 +60,7 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden items-center gap-6 md:flex">
-            {navLinks.map((link) => (
+            {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
