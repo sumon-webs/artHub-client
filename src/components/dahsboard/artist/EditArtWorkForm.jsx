@@ -1,93 +1,64 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Button, Form, Input, TextArea, Select, Card } from "@heroui/react";
-import { authClient } from "@/lib/auth-client";
+import React, { useState, useRef } from "react";
+import {
+  Button,
+  Form,
+  Input,
+  TextArea,
+  Select,
+  Card,
+  TextField,
+  Label,
+  ListBox,
+} from "@heroui/react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { SelectItem } from "@heroui/select";
 import { updateArtwork } from "@/lib/actions/artworks";
 
-const categories = [
-  "painting",
-  "drawing",
-  "sketch",
-  "digital-art",
-  "illustration",
-  "photography",
-  "abstract",
-  "modern-art",
-  "others",
-];
+
 
 export default function EditArtWorkForm({ artwork }) {
   const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef(null);
   const router = useRouter();
-
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    price: "",
-    category: "",
-  });
-
-  useEffect(() => {
-    if (artwork) {
-      setFormData({
-        title: artwork.title || "",
-        description: artwork.description || "",
-        price: artwork.price || "",
-        category: artwork.category || "",
-      });
-    }
-  }, [artwork]);
-
-  const handleChange = (name, value) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    const fileInput = e.currentTarget.querySelector('input[type="file"]');
-    const file = fileInput?.files?.[0];
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
 
-    let imageUrl = artwork?.imageUrl;
 
     try {
-      setLoading(true);
+      const file = fileInputRef.current?.files[0];
+      let imageUrl = artwork?.imageUrl;
 
       if (file) {
         const imgData = new FormData();
         imgData.append("image", file);
-
         const response = await fetch(
           `https://api.imgbb.com/1/upload?key=d594d0c9bfdf17d819730deeb1b08f55`,
-          { method: "POST", body: imgData },
+          {
+            method: "POST",
+            body: imgData,
+          },
         );
-
         const result = await response.json();
-        imageUrl = result.data.url;
+        if (result.success) imageUrl = result.data.url;
       }
 
-      const finalData = {
-        ...formData,
-        imageUrl,
-      };
-console.log(finalData)
-      const res = await updateArtwork(artwork._id, finalData);
-
-      if (!res.success) throw new Error(res.message);
-
-      toast.success("Artwork updated successfully!");
-      router.push("/dashboard/artist/manage-artworks");
-
-      if (!res.success) throw new Error(res.message);
-
-      toast.success("Artwork updated successfully!");
-      router.push("/dashboard/artist/manage-artworks");
+      const res = await updateArtwork(artwork._id, { ...data, imageUrl });
+      console.log(res);
+      if (res?.success) {
+        toast.success("Artwork updated successfully!");
+        router.push("/dashboard/artist/manage-artworks");
+      } else {
+        throw new Error(res?.message || "Update failed");
+      }
     } catch (error) {
-      toast.error(error.message || "Update failed");
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -95,63 +66,48 @@ console.log(finalData)
 
   return (
     <Card className="p-6 max-w-lg mx-auto dark:bg-zinc-900">
-      <Form onSubmit={onSubmit} className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold">Edit Artwork</h2>
+      <Form className="flex flex-col gap-4" onSubmit={onSubmit}>
+        <h2 className="text-xl font-bold">Edit Product</h2>
 
-        <Input
-          label="Title"
-          value={formData.title}
-          onValueChange={(val) => handleChange("title", val)}
-          isRequired
-        />
+        <TextField defaultValue={artwork.title} isRequired name="title">
+          <Label>Title</Label>
+          <Input />
+        </TextField>
 
-        <TextArea
-          label="Description"
-          value={formData.description}
-          onValueChange={(val) => handleChange("description", val)}
+        <TextField
+          defaultValue={artwork.description}
           isRequired
-        />
-
-        <Input
-          label="Price"
-          type="number"
-          value={String(formData.price)}
-          onValueChange={(val) => handleChange("price", val)}
-          isRequired
-        />
-
-        <Select
-          label="Category"
-          selectedKeys={
-            formData.category ? new Set([formData.category]) : new Set()
-          }
-          onSelectionChange={(keys) => {
-            const value = [...keys][0] || "";
-            handleChange("category", value);
-          }}
-          isRequired
+          name="description"
         >
-          {categories.map((cat) => (
-            <SelectItem key={cat}>{cat}</SelectItem>
-          ))}
-        </Select>
+          <Label>Description</Label>
+          <TextArea />
+        </TextField>
 
+        <TextField
+          defaultValue={artwork.price}
+          isRequired
+          name="price"
+          type="number"
+        >
+          <Label>Price</Label>
+          <Input />
+        </TextField>
+
+
+        {/* Image Preview */}
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium">Product Image</label>
-
-          {artwork?.imageUrl && (
-            <img
-              src={artwork.imageUrl}
-              alt="preview"
-              className="w-24 h-24 object-cover rounded"
-            />
-          )}
-
-          <input type="file" name="image" accept="image/*" />
+          <Label>Current Image</Label>
+          <img
+            src={artwork.imageUrl}
+            alt="Artwork"
+            className="w-32 h-32 object-cover rounded shadow-md"
+          />
+          <Label>Change Image (Optional)</Label>
+          <input type="file" ref={fileInputRef} accept="image/*" />
         </div>
 
         <Button type="submit" isLoading={loading}>
-          Update
+          {loading?'Submiting...':'Submit'}
         </Button>
       </Form>
     </Card>

@@ -29,7 +29,6 @@ const artistLinks = [
   { name: "Dashboard", href: "/dashboard/artist", icon: LayoutDashboard },
   { name: "Manage Artworks", href: "/dashboard/artist/manage-artworks", icon: Palette },
   { name: "Add Artwork", href: "/dashboard/artist/add-artwork", icon: PlusCircle },
-  { name: "Edit Artwork", href: "/dashboard/artist/edit-artwork", icon: Pencil },
   { name: "Sales History", href: "/dashboard/artist/sales-history", icon: History },
   { name: "Profile Management", href: "/dashboard/artist/profile", icon: User },
 ];
