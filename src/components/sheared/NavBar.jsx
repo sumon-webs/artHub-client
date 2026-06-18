@@ -7,6 +7,7 @@ import { useTheme } from "next-themes";
 import Image from "next/image";
 import { ThemeSwitch } from "../ThemeSwitch";
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -14,6 +15,7 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme } = useTheme();
 
@@ -21,7 +23,8 @@ export default function Navbar() {
   const user = session?.user;
   const handleLogout = async () => {
     try {
-      await authClient.signOut(); // যদি তোমার lib এ নাম আলাদা হয় adjust করবে
+      await authClient.signOut();
+      router.push("/");
     } catch (err) {
       console.error("Logout failed:", err);
     }

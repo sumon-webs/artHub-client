@@ -71,6 +71,7 @@ export default function AddArtWorkForm() {
         category: formData.get("category"),
         imageUrl: imageUrl,
         artistId: user?.id,
+        artistName:user?.name
       };
 
       const res = await postArtwork(finalData);

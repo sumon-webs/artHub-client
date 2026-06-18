@@ -52,9 +52,7 @@ export function SignupForm() {
 
     try {
       setLoading(true);
-      if (form.role === "buyer") {
-        setPlan("buyer-free");
-      }
+      {form.role === "buyer"?"buyer-free": 'artist-free'}
       const { data, error } = await authClient.signUp.email({
         name: form.name,
         email: form.email,
