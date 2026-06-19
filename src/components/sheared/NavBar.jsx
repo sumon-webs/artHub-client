@@ -36,7 +36,7 @@ export default function Navbar() {
       : user?.role === "artist"
         ? { name: "Dashboard", href: "/dashboard/artist" }
         : user?.role === "buyer"
-          ? { name: "Dashboard", href: "/dashboard/buyer" }
+          ? { name: "Dashboard", href: "/dashboard/buyer/purchase-history" }
           : null;
 
   const links = dashboardLink ? [...navLinks, dashboardLink] : navLinks;

@@ -34,9 +34,8 @@ const artistLinks = [
 ];
 
 const buyerLinks = [
-  { name: "Dashboard", href: "/dashboard/buyer", icon: LayoutDashboard },
-  { name: "Bought Artworks", href: "/dashboard/buyer/bought-artworks", icon: ShoppingBag },
   { name: "Purchase History", href: "/dashboard/buyer/purchase-history", icon: History },
+  { name: "Bought Artworks", href: "/dashboard/buyer/bought-artworks", icon: ShoppingBag },
   { name: "Profile Management", href: "/dashboard/buyer/profile", icon: User },
 ];
 
