@@ -14,7 +14,9 @@ import Link from "next/link";
 const ArtistProfilePage = async () => {
   const session = await getUserSession();
   const user = session?.user;
-  const artWorks = await getArtWorks(user?.id);
+  const artistId = user?.id;
+
+  const artWorks = await getArtWorks({artistId});
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="mx-auto max-w-7xl space-y-6">

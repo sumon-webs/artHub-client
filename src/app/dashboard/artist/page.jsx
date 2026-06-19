@@ -5,11 +5,12 @@ import Link from "next/link";
 import { getArtWorks } from "@/lib/api/artworks";
 import { getUserSession } from "@/lib/core/session";
 
-const ArtistDashobardHome = async() => {
-   const session = await getUserSession();
-    const user = session?.user;
-    const artWorks = await getArtWorks(user?.id);
-    console.log(artWorks)
+const ArtistDashobardHome = async () => {
+  const session = await getUserSession();
+  const user = session?.user;
+  const artistId = user?.id;
+
+  const artWorks = await getArtWorks({ artistId });
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="mx-auto container space-y-8">
@@ -26,41 +27,42 @@ const ArtistDashobardHome = async() => {
         {/* Stats Cards */}
         <div className="grid gap-6 md:grid-cols-4">
           <Card>
-              <Palette className="text-primary" />
-              <div>
-                <p className="text-sm text-default-500">Total Artworks</p>
-                <h3 className="text-xl font-bold">{artWorks?.data?.count||0}</h3>
-              </div>
+            <Palette className="text-primary" />
+            <div>
+              <p className="text-sm text-default-500">Total Artworks</p>
+              <h3 className="text-xl font-bold">
+                {artWorks?.data?.count || 0}
+              </h3>
+            </div>
           </Card>
 
           <Card>
-              <DollarSign className="text-warning" />
-              <div>
-                <p className="text-sm text-default-500">Earnings</p>
-                <h3 className="text-xl font-bold">$240</h3>
-              </div>
+            <DollarSign className="text-warning" />
+            <div>
+              <p className="text-sm text-default-500">Earnings</p>
+              <h3 className="text-xl font-bold">$240</h3>
+            </div>
           </Card>
-
         </div>
 
         {/* Quick Actions */}
         <Card>
-            <div>
-              <h2 className="text-xl font-semibold">Quick Actions</h2>
-              <p className="text-default-500">
-                Upload new artwork or manage your portfolio
-              </p>
-            </div>
+          <div>
+            <h2 className="text-xl font-semibold">Quick Actions</h2>
+            <p className="text-default-500">
+              Upload new artwork or manage your portfolio
+            </p>
+          </div>
 
-            <div className="flex gap-3">
-              <Link href="/dashboard/artist/add-artwork">
-                <Button color="primary">Add Artwork</Button>
-              </Link>
+          <div className="flex gap-3">
+            <Link href="/dashboard/artist/add-artwork">
+              <Button color="primary">Add Artwork</Button>
+            </Link>
 
-              <Link href="/dashboard/artist/artworks">
-                <Button variant="bordered">View All</Button>
-              </Link>
-            </div>
+            <Link href="/dashboard/artist/manage-artworks">
+              <Button variant="bordered">View All</Button>
+            </Link>
+          </div>
         </Card>
       </div>
     </div>

@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { ArtworkCard } from "./ArtWorkCard";
 import { getArtWorks } from "@/lib/api/artworks";
+import Link from "next/link";
+import { Button } from "@heroui/react";
 
 const BrowsArtsSection = ({ initialData }) => {
   const [data, setData] = useState(initialData || []);
@@ -10,7 +12,6 @@ const BrowsArtsSection = ({ initialData }) => {
   const [category, setCategory] = useState("all");
   const [sortByPrice, setSortByPrice] = useState("");
   const [loading, setLoading] = useState(false);
-
   // unique categories
   const categories = useMemo(() => {
     const cats = initialData.map((item) => item.category);
@@ -90,11 +91,10 @@ const BrowsArtsSection = ({ initialData }) => {
       )}
 
       {/* Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-        {data.map((item) => (
-          <ArtworkCard key={item._id} artwork={item} />
-        ))}
+      <div >
+        <ArtworkCard key={data._id} artWorks={data} />
       </div>
+      
     </div>
   );
 };

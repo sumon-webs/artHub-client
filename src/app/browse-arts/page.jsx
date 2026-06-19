@@ -3,8 +3,10 @@ import { getArtWorks } from "@/lib/api/artworks";
 
 const BrowseArtspage = async () => {
   const arr = await getArtWorks();
-  const artWorks = arr?.data?.data || [];
-
+  const arts = {
+    items: arr?.data?.data || [],
+  };
+  const artWorks = arts?.items;
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-10 transition-colors duration-300">
       {/* Header Section */}

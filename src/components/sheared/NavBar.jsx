@@ -8,6 +8,7 @@ import Image from "next/image";
 import { ThemeSwitch } from "../ThemeSwitch";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { Avatar, Button } from "@heroui/react";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -29,7 +30,7 @@ export default function Navbar() {
       console.error("Logout failed:", err);
     }
   };
-
+  
   const dashboardLink =
     user?.role === "admin"
       ? { name: "Dashboard", href: "/dashboard/admin" }
@@ -77,12 +78,18 @@ export default function Navbar() {
 
             {/* Auth Button */}
             {user ? (
-              <button
-                onClick={handleLogout}
-                className="rounded-lg bg-red-500 px-4 py-2 text-white transition hover:bg-red-600"
-              >
-                Logout
-              </button>
+              <div className=" flex items-center gap-2">
+                <Avatar>
+                  <Avatar.Image alt={user?.name} src={user?.image} />
+                  <Avatar.Fallback>Hi</Avatar.Fallback>
+                </Avatar>
+                <Button
+                  onClick={handleLogout}
+                  className="rounded-lg bg-red-500 px-4 py-2 text-white transition hover:bg-red-600"
+                >
+                  Logout
+                </Button>
+              </div>
             ) : (
               <Link
                 href="/signin"
@@ -94,9 +101,9 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Button */}
-          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
+          <Button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
             {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          </Button>
         </div>
 
         {/* Mobile Menu */}

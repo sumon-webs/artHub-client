@@ -8,10 +8,9 @@ import React from "react";
 const ManageArtworksPage = async () => {
   const session = await getUserSession();
   const user = session?.user;
-
-  const arts = await getArtWorks(user?.id);
+  const artistId = user?.id;
+  const arts = await getArtWorks({artistId});
   const artworks = arts?.data?.data || [];
-
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 text-black dark:text-white p-6">
       <div className=" flex justify-between">

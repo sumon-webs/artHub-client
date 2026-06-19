@@ -9,7 +9,6 @@ export const getArtWorks = async ({
   sortByPrice = "",
 } = {}) => {
   const params = new URLSearchParams();
-
   if (artistId) params.append("artistId", artistId);
   if (category && category !== "all") params.append("category", category);
   if (search) params.append("search", search);
