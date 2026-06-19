@@ -29,9 +29,5 @@ export const deleteArtwork = async (id, artistId) => {
     method: "DELETE",
     body: { artistId },
   });
-  console.log(res);
-  if (res.data.deletedCount > 0) {
-    revalidatePath("/dashboard/artist/manage-artworks");
-  }
   return res;
 };

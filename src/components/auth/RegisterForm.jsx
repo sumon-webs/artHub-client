@@ -48,7 +48,6 @@ export function SignupForm() {
       toast.error("Passwords do not match!");
       return;
     }
-    console.log(role);
 
     try {
       setLoading(true);

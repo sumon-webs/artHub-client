@@ -1,4 +1,3 @@
-
 import SalesHistoryTable from "@/components/dahsboard/artist/SalesHistoryTable";
 import { getOrders } from "@/lib/api/orders";
 import { getUserSession } from "@/lib/core/session";
@@ -9,7 +8,6 @@ const SalesHistoryPage = async () => {
 
   const res = await getOrders({ artistId });
   const salesHistories = res?.data?.data || [];
-
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="mx-auto max-w-6xl space-y-6">
@@ -50,9 +48,7 @@ const SalesHistoryPage = async () => {
         {/* List */}
         <div className="space-y-4">
           {salesHistories.length > 0 ? (
-            salesHistories.map((order) => (
-              <SalesHistoryTable key={order._id} order={order} />
-            ))
+            <SalesHistoryTable data={salesHistories} />
           ) : (
             <div className="text-center py-20 text-default-500">
               No sales found yet

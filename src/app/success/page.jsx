@@ -27,7 +27,6 @@ export default async function Success({ searchParams }) {
 
     const artworkRes = await getArtworkDetails(artworkId);
     const artwork = artworkRes?.data?.data;
-
     await createOrder({
       artworkId: artwork._id,
       artWorkName: artwork.title,
@@ -37,6 +36,7 @@ export default async function Success({ searchParams }) {
       artistId: artwork.artistId,
       artistName: artwork.artistName,
       buyerId,
+      buyerName:session.metadata.buyerName,
       stripeSessionId: session.id,
       paymentStatus: session.payment_status,
       purchasedAt: new Date(),

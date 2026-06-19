@@ -24,8 +24,8 @@ export default function ArtworksTable({ data = [], artistId }) {
 
   return (
     <div className="w-full overflow-x-auto">
-      <Table className="max-w-2xl">
-        <Table.Content aria-label="Artworks Table">
+      <Table className=" mx-auto">
+        <Table.Content aria-label="Artworks Table" className="min-w-[900px]">
           <Table.Header>
             <Table.Column isRowHeader>Title</Table.Column>
             <Table.Column>Price</Table.Column>

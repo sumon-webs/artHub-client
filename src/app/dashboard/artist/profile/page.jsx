@@ -83,7 +83,6 @@ const ArtistProfilePage = async () => {
                   {artistDetails?.totalSales || 0}
                 </h2>
               </div>
-              <DollarSign className="text-success" size={30} />
             </div>
           </div>
         </div>

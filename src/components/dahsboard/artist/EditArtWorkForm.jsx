@@ -53,7 +53,7 @@ export default function EditArtWorkForm({ artwork }) {
       console.log(res);
       if (res?.success) {
         toast.success("Artwork updated successfully!");
-        router.push("/dashboard/artist/manage-artworks");
+        router.push(`/browse-arts/${artwork?._id}`);
       } else {
         throw new Error(res?.message || "Update failed");
       }
@@ -69,13 +69,13 @@ export default function EditArtWorkForm({ artwork }) {
       <Form className="flex flex-col gap-4" onSubmit={onSubmit}>
         <h2 className="text-xl font-bold">Edit Product</h2>
 
-        <TextField defaultValue={artwork.title} isRequired name="title">
+        <TextField defaultValue={artwork?.title} isRequired name="title">
           <Label>Title</Label>
           <Input />
         </TextField>
 
         <TextField
-          defaultValue={artwork.description}
+          defaultValue={artwork?.description}
           isRequired
           name="description"
         >
@@ -84,7 +84,7 @@ export default function EditArtWorkForm({ artwork }) {
         </TextField>
 
         <TextField
-          defaultValue={artwork.price}
+          defaultValue={artwork?.price}
           isRequired
           name="price"
           type="number"
@@ -98,7 +98,7 @@ export default function EditArtWorkForm({ artwork }) {
         <div className="flex flex-col gap-2">
           <Label>Current Image</Label>
           <img
-            src={artwork.imageUrl}
+            src={artwork?.imageUrl}
             alt="Artwork"
             className="w-32 h-32 object-cover rounded shadow-md"
           />

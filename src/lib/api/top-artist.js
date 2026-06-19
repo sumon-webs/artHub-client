@@ -8,7 +8,7 @@ export const getTopArtists = async ({
   sortBy = "",
 } = {}) => {
   const params = new URLSearchParams();
-console.log(artistId)
+  
   if (artistId) params.append("artistId", artistId);
   if (search) params.append("search", search);
   if (sortBy) params.append("sortBy", sortBy);
