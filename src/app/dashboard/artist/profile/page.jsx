@@ -1,4 +1,5 @@
 import { getArtWorks } from "@/lib/api/artworks";
+import { getTopArtists } from "@/lib/api/top-artist";
 import { getUserSession } from "@/lib/core/session";
 import { Avatar } from "@heroui/react";
 import {
@@ -16,7 +17,12 @@ const ArtistProfilePage = async () => {
   const user = session?.user;
   const artistId = user?.id;
 
-  const artWorks = await getArtWorks({artistId});
+  const artWorks = await getArtWorks({ artistId });
+
+  const res = await getTopArtists({ artistId });
+  const artistArr = res?.data?.data;
+  const artistDetails = artistArr.find(art => art.totalSales)
+  
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="mx-auto max-w-7xl space-y-6">
@@ -73,7 +79,9 @@ const ArtistProfilePage = async () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-default-500">Total Sales</p>
-                <h2 className="mt-2 text-3xl font-bold">48</h2>
+                <h2 className="mt-2 text-3xl font-bold">
+                  {artistDetails?.totalSales || 0}
+                </h2>
               </div>
               <DollarSign className="text-success" size={30} />
             </div>

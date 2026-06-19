@@ -7,12 +7,12 @@ import Link from "next/link";
 import { deleteArtwork } from "@/lib/actions/artworks";
 import { useRouter } from "next/navigation";
 
-export default function ArtworksTable({ data = [] }) {
+export default function ArtworksTable({ data = [], artistId }) {
   const router = useRouter();
 
   const handleDelete = async (id) => {
     try {
-      const res = await deleteArtwork(id);
+      const res = await deleteArtwork(id, artistId);
 
       if (res?.data?.success && res?.data?.deletedCount > 0) {
         router.refresh();

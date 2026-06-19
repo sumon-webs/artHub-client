@@ -23,11 +23,13 @@ export const updateArtwork = async (id, data) => {
   return res;
 };
 
-export const deleteArtwork = async (id) => {
+export const deleteArtwork = async (id, artistId) => {
   const res = await serverMutation({
     endpoint: `/api/artworks/${id}`,
     method: "DELETE",
+    body: { artistId },
   });
+  console.log(res);
   if (res.data.deletedCount > 0) {
     revalidatePath("/dashboard/artist/manage-artworks");
   }

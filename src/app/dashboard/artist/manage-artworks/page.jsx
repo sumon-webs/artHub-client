@@ -20,7 +20,7 @@ const ManageArtworksPage = async () => {
         </Link>
       </div>
       {artworks.length > 0 ? (
-        <ArtworksTable data={artworks} />
+        <ArtworksTable data={artworks} artistId={artistId}/>
       ) : (
         <div className="flex flex-col items-center justify-center mt-20 text-center">
           <h2 className="text-xl font-semibold">No artworks found</h2>

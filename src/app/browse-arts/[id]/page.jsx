@@ -9,7 +9,6 @@ const ArtWorkDetailspage = async ({ params }) => {
 
   const session = await getUserSession()
   const user = session?.user
-  console.log(user)
   return (
     <div>
       <ArtworkDetailsCard artwork={artwork} user={user}/>

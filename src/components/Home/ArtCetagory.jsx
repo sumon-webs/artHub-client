@@ -9,7 +9,7 @@ const categories = [
 
 export default function CategorySection() {
   return (
-    <section className="w-full py-10 dark:bg-slate-950">
+    <section className="w-full py-10 md:py-23 dark:bg-slate-950">
       <div className="mx-auto container px-4">
         {/* Title */}
         <h2 className=" text-center mb-6 text-2xl font-bold text-foreground">

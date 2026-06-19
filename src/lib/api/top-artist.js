@@ -2,10 +2,21 @@
 
 import { fetchServer } from "../core/fetchServer";
 
+export const getTopArtists = async ({
+  artistId = "",
+  search = "",
+  sortBy = "",
+} = {}) => {
+  const params = new URLSearchParams();
+console.log(artistId)
+  if (artistId) params.append("artistId", artistId);
+  if (search) params.append("search", search);
+  if (sortBy) params.append("sortBy", sortBy);
 
-export const getTopArtists = async () => {
+  const endpoint = `/api/top-selling-artists?${params.toString()}`;
+
   const res = await fetchServer({
-    endpoint: "/api/top-selling-artists",
+    endpoint,
   });
 
   return res;

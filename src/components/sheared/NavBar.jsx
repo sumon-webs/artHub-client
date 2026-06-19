@@ -30,7 +30,6 @@ export default function Navbar() {
       console.error("Logout failed:", err);
     }
   };
-  
   const dashboardLink =
     user?.role === "admin"
       ? { name: "Dashboard", href: "/dashboard/admin" }

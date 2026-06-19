@@ -5,11 +5,12 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { CircleDollar } from "@gravity-ui/icons";
 import { useState } from "react";
+import { createComment } from "@/lib/actions/comment";
 
 export function ArtworkDetailsCard({ artwork, user }) {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
-  
+
   const isLoggedIn = !!user;
   const isBuyer = user?.role === "buyer";
 
@@ -44,15 +45,32 @@ export function ArtworkDetailsCard({ artwork, user }) {
   const handleComment = async () => {
     if (!comment.trim() || !canInteract) return;
 
-    const newComment = {
-      artworkId: artwork._id,
-      text: comment,
-      userId: user?.id,
-      createdAt: new Date(),
-    };
+    try {
+      const res = await createComment({
+        artworkId: artwork._id,
+        text: comment,
+        userId: user?.id,
+        userName: user?.name,
+        userImage: user?.image || "",
+      });
 
-    setComments([newComment, ...comments]);
-    setComment("");
+      if (res?.success) {
+        setComments((prev) => [
+          {
+            _id: res?.insertedId,
+            artworkId: artwork._id,
+            text: comment,
+            userName: user?.name,
+            createdAt: new Date(),
+          },
+          ...prev,
+        ]);
+
+        setComment("");
+      }
+    } catch (error) {
+      console.error("Comment error:", error);
+    }
   };
 
   if (!artwork) return null;
