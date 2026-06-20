@@ -18,8 +18,7 @@ import {
 
 import { authClient } from "@/lib/auth-client";
 
-const adminLinks = [
-  { name: "Dashboard", href: "/dashboard/admin", icon: LayoutDashboard },
+const adminLinks = [  
   { name: "Manage Users", href: "/dashboard/admin/manage-users", icon: Users },
   { name: "Manage All Artworks", href: "/dashboard/admin/manage-artworks", icon: Palette },
   { name: "View All Transactions", href: "/dashboard/admin/transactions", icon: ReceiptText },
@@ -27,7 +26,6 @@ const adminLinks = [
 ];
 
 const artistLinks = [
-  { name: "Dashboard", href: "/dashboard/artist", icon: LayoutDashboard },
   { name: "Manage Artworks", href: "/dashboard/artist/manage-artworks", icon: Palette },
   { name: "Add Artwork", href: "/dashboard/artist/add-artwork", icon: PlusCircle },
   { name: "Sales History", href: "/dashboard/artist/sales-history", icon: History },

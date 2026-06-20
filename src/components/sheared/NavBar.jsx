@@ -32,7 +32,7 @@ export default function Navbar() {
   };
   const dashboardLink =
     user?.role === "admin"
-      ? { name: "Dashboard", href: "/dashboard/admin" }
+      ? { name: "Dashboard", href: "/dashboard/admin/manage-users" }
       : user?.role === "artist"
         ? { name: "Dashboard", href: "/dashboard/artist" }
         : user?.role === "buyer"
