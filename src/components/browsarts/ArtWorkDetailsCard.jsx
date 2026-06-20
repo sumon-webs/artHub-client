@@ -7,14 +7,15 @@ import { CircleDollar } from "@gravity-ui/icons";
 import { useState } from "react";
 import { createComment } from "@/lib/actions/comment";
 
-export function ArtworkDetailsCard({ artwork, user }) {
+export function ArtworkDetailsCard({ artwork, user, limitReached }) {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
 
   const isLoggedIn = !!user;
   const isBuyer = user?.role === "buyer";
 
-  const canInteract = isLoggedIn && isBuyer;
+  // FINAL ACCESS RULE
+  const canInteract = isLoggedIn && isBuyer && !limitReached;
 
   // BUY NOW
   const handleBuyNow = async () => {
@@ -43,7 +44,7 @@ export function ArtworkDetailsCard({ artwork, user }) {
 
   // COMMENT
   const handleComment = async () => {
-    if (!comment.trim() || !canInteract) return;
+    if (!canInteract || !comment.trim()) return;
 
     try {
       const res = await createComment({
@@ -58,7 +59,6 @@ export function ArtworkDetailsCard({ artwork, user }) {
         setComments((prev) => [
           {
             _id: res?.insertedId,
-            artworkId: artwork._id,
             text: comment,
             userName: user?.name,
             createdAt: new Date(),
@@ -81,6 +81,28 @@ export function ArtworkDetailsCard({ artwork, user }) {
       animate={{ opacity: 1, y: 0 }}
       className="max-w-5xl mx-auto py-12"
     >
+      {/* 🚨 LIMIT WARNING */}
+      {limitReached && (
+        <div className="mb-4 rounded-xl border border-red-300 bg-red-50 p-4 text-red-700 font-medium space-y-3">
+          <p>
+            ⚠️ Your plan limit has been reached. You can still view artwork, but
+            buying and commenting are disabled.
+          </p>
+
+          <div className="flex items-center gap-3">
+            <Link href="/dashboard/buyer/pricing">
+              <Button color="warning" >
+                🚀 Upgrade Plan
+              </Button>
+            </Link>
+
+            <span className="text-sm text-red-600">
+              Upgrade to continue buying & commenting
+            </span>
+          </div>
+        </div>
+      )}
+
       <Card className="overflow-hidden p-0">
         {/* IMAGE */}
         <div className="relative w-full h-[400px]">
@@ -124,21 +146,21 @@ export function ArtworkDetailsCard({ artwork, user }) {
           </div>
 
           {/* 🛒 BUY BUTTON */}
-          <form action="/api/checkout_sessions" method="POST">
-            <div className="pt-4">
-              <Button
-                color="primary"
-                disabled={!canInteract}
-                onClick={handleBuyNow}
-              >
-                {!isLoggedIn
-                  ? "Login to Buy"
-                  : !isBuyer
-                    ? "Only buyers can purchase"
+          <div className="pt-4">
+            <Button
+              color="primary"
+              disabled={!canInteract}
+              onClick={handleBuyNow}
+            >
+              {!isLoggedIn
+                ? "Login to Buy"
+                : !isBuyer
+                  ? "Only buyers can purchase"
+                  : limitReached
+                    ? "Plan limit reached"
                     : "Buy Now"}
-              </Button>
-            </div>
-          </form>
+            </Button>
+          </div>
         </div>
       </Card>
 
@@ -150,15 +172,20 @@ export function ArtworkDetailsCard({ artwork, user }) {
           <p className="text-sm text-red-500 mb-4">Please login to comment</p>
         ) : !isBuyer ? (
           <p className="text-sm text-red-500 mb-4">Only buyers can comment</p>
+        ) : limitReached ? (
+          <p className="text-sm text-red-500 mb-4">
+            Your plan limit has been reached. Upgrade to continue commenting.
+          </p>
         ) : null}
 
-        {/* input */}
+        {/* INPUT */}
         <div className="flex flex-col gap-3">
           <textarea
             placeholder="Write your comment..."
             value={comment}
             disabled={!canInteract}
             onChange={(e) => setComment(e.target.value)}
+            className="border p-2 rounded-md"
           />
 
           <Button
@@ -170,13 +197,16 @@ export function ArtworkDetailsCard({ artwork, user }) {
           </Button>
         </div>
 
-        {/* list */}
+        {/* LIST */}
         <div className="mt-6 space-y-3">
           {comments.length === 0 ? (
             <p className="text-sm text-default-500">No comments yet.</p>
           ) : (
-            comments.map((c, i) => (
-              <div key={i} className="p-3 rounded-lg bg-default-100 text-sm">
+            comments.map((c) => (
+              <div
+                key={c._id}
+                className="p-3 rounded-lg bg-default-100 text-sm"
+              >
                 <p>{c.text}</p>
                 <span className="text-xs text-default-500">
                   {new Date(c.createdAt).toLocaleString()}

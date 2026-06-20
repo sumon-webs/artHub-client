@@ -1,6 +1,8 @@
 import { ArtworkDetailsCard } from "@/components/browsarts/ArtWorkDetailsCard";
 import DeleteModal from "@/components/dahsboard/artist/DeleteModal";
 import { getArtworkDetails } from "@/lib/api/artworks";
+import { getOrders } from "@/lib/api/orders";
+import { getPlans } from "@/lib/api/plans";
 import { getUserSession } from "@/lib/core/session";
 import { Button } from "@heroui/react";
 import Link from "next/link";
@@ -13,7 +15,18 @@ const ArtWorkDetailspage = async ({ params }) => {
   const session = await getUserSession();
   const user = session?.user;
 
+  const buyerId = user?.id;
+
   const isOwned = artwork?.artistId === user?.id;
+  const planId = user?.plan;
+
+  const orderRes = await getOrders({ buyerId });
+  const myOrders = orderRes?.data?.data || [];
+  
+  const planObj = await getPlans({ planId });
+  const plan = planObj?.data;
+  const limitReached = plan?.max !== undefined && myOrders.length >= plan.max;
+
   return (
     <div className=" container mx-auto">
       {isOwned && (
@@ -26,7 +39,11 @@ const ArtWorkDetailspage = async ({ params }) => {
           <DeleteModal artwork={artwork} />
         </div>
       )}
-      <ArtworkDetailsCard artwork={artwork} user={user} />
+      <ArtworkDetailsCard
+        limitReached={limitReached}
+        artwork={artwork}
+        user={user}
+      />
     </div>
   );
 };

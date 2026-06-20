@@ -13,6 +13,7 @@ import {
   BarChart3,
   ReceiptText,
   Users,
+  PrinterCheck,
 } from "lucide-react";
 
 import { authClient } from "@/lib/auth-client";
@@ -37,6 +38,9 @@ const buyerLinks = [
   { name: "Purchase History", href: "/dashboard/buyer/purchase-history", icon: History },
   { name: "Bought Artworks", href: "/dashboard/buyer/bought-artworks", icon: ShoppingBag },
   { name: "Profile Management", href: "/dashboard/buyer/profile", icon: User },
+  { name: "Pricing Management", href: "/dashboard/buyer/pricing", icon: PrinterCheck },
+
+
 ];
 
 export default function Sidebar() {
@@ -88,8 +92,8 @@ export default function Sidebar() {
               href={item.href}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                 active
-                  ? "bg-primary text-primary-foreground shadow-md"
-                  : "hover:bg-default-100 text-default-700 dark:text-default-300"
+                  ? " shadow-md bg-blue-300 text-black"
+                  : ""
               }`}
             >
               <Icon size={20} />

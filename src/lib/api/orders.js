@@ -7,10 +7,11 @@ export const getOrders = async ({
   buyerId = "",
   status = "",
 } = {}) => {
+  console.log(buyerId)
   const params = new URLSearchParams();
 
   if (artistId) params.append("artistId", artistId);
-  if (buyerId) params.append("byerId", buyerId);
+  if (buyerId) params.append("buyerId", buyerId);
   if (status) params.append("status", status);
 
   const queryString = params.toString();

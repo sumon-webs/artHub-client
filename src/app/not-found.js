@@ -1,31 +1,53 @@
-import Link from "next/link";
 import { Button } from "@heroui/react";
+import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
-      <h1 className="text-6xl font-bold text-default-900">404</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-default-100 to-background px-6">
+      <div className="text-center max-w-md space-y-6">
+        {/* Big Artistic 404 */}
+        <div className="">
+          <h1 className="text-[120px] font-extrabold text-primary/10 select-none">
+            404
+          </h1>
 
-      <h2 className="mt-4 text-2xl font-semibold">
-        Page Not Found
-      </h2>
+          <h2 className="absolute inset-0 flex items-center justify-center text-4xl font-bold text-default-900">
+            Lost in Art 🎨
+          </h2>
+        </div>
 
-      <p className="mt-2 text-default-500 max-w-md">
-        Sorry, the page you are looking for doesn’t exist or has been moved.
-      </p>
+        {/* Description */}
+        <p className="text-default-500 leading-relaxed">
+          The artwork you are looking for seems to have vanished into the
+          creative void. It might have been moved, deleted, or never existed.
+        </p>
 
-      <div className="mt-6 flex gap-3">
-        <Button as={Link} href="/" color="primary">
-          Go Home
-        </Button>
+        {/* Decorative line */}
+        <div className="flex items-center gap-2 justify-center">
+          <span className="h-px w-12 bg-default-300"></span>
+          <span className="text-xs text-default-400">ArtHub</span>
+          <span className="h-px w-12 bg-default-300"></span>
+        </div>
 
-        <Button
-          as={Link}
-          href="/bought-artworks"
-          variant="flat"
-        >
-          My Purchases
-        </Button>
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <Link href="/">
+            <Button color="primary" className="w-full sm:w-auto">
+              Explore Home
+            </Button>
+          </Link>
+
+          <Link href="/browse-arts">
+            <Button variant="bordered" className="w-full sm:w-auto">
+              Browse Artworks
+            </Button>
+          </Link>
+        </div>
+
+        {/* Small hint */}
+        <p className="text-xs text-default-400">
+          Tip: Try searching for artworks or check your dashboard.
+        </p>
       </div>
     </div>
   );

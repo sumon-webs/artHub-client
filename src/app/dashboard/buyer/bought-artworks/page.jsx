@@ -9,7 +9,7 @@ const BoughtArtsWorksPage = async () => {
 
   const res = await getOrders({ buyerId });
   const purchaseHistories = res?.data?.data || [];
-
+// console.log(purchaseHistories)
   return (
     <div className="space-y-6">
       <div>
