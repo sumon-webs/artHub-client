@@ -7,7 +7,7 @@ export const getOrders = async ({
   buyerId = "",
   status = "",
 } = {}) => {
-  console.log(buyerId)
+  
   const params = new URLSearchParams();
 
   if (artistId) params.append("artistId", artistId);

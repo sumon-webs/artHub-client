@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 
 import { authClient } from "@/lib/auth-client";
+import { Comment } from "@gravity-ui/icons";
 
 const adminLinks = [  
   { name: "Manage Users", href: "/dashboard/admin/manage-users", icon: Users },
@@ -37,6 +38,8 @@ const buyerLinks = [
   { name: "Bought Artworks", href: "/dashboard/buyer/bought-artworks", icon: ShoppingBag },
   { name: "Profile Management", href: "/dashboard/buyer/profile", icon: User },
   { name: "Pricing Management", href: "/dashboard/buyer/pricing", icon: PrinterCheck },
+  { name: "Comment Management", href: "/dashboard/buyer/coments", icon: Comment },
+
 
 
 ];

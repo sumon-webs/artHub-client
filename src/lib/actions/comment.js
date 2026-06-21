@@ -33,6 +33,39 @@ export const deleteComment = async (id) => {
   });
 
   if (res?.data?.deletedCount > 0 || res?.success) {
+    revalidatePath("/dashboard/buyer/coments");
+  }
+
+  return res;
+};
+
+export const updateComment = async ({ id, text, userId }) => {
+  console.log(id)
+  if (!id) {
+    return {
+      success: false,
+      message: "Comment id is required",
+    };
+  }
+
+  if (!text || !text.trim()) {
+    return {
+      success: false,
+      message: "Comment text is required",
+    };
+  }
+
+  const res = await serverMutation({
+    endpoint: `/api/comments/${id}`,
+    method: "PATCH",
+    body: {
+      text,
+      userId, // optional but useful for ownership check
+    },
+  });
+
+  if (res?.success) {
+    revalidatePath("/dashboard/buyer/comments");
     revalidatePath("/artworks");
   }
 

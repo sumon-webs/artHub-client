@@ -22,14 +22,13 @@ export default function Navbar() {
 
   const { data: session } = authClient.useSession();
   const user = session?.user;
+
   const handleLogout = async () => {
-    try {
-      await authClient.signOut();
-      router.push("/");
-    } catch (err) {
-      console.error("Logout failed:", err);
-    }
+    await authClient.signOut();
+    router.push("/");
+    setIsOpen(false);
   };
+
   const dashboardLink =
     user?.role === "admin"
       ? { name: "Dashboard", href: "/dashboard/admin/manage-users" }
@@ -42,32 +41,25 @@ export default function Navbar() {
   const links = dashboardLink ? [...navLinks, dashboardLink] : navLinks;
 
   return (
-    <nav className="border-b bg-white dark:bg-zinc-950 dark:border-zinc-800">
-      <div className="mx-auto max-w-7xl px-6">
+    <nav className="border-b bg-white dark:bg-zinc-950 dark:border-zinc-800 relative">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2 text-2xl font-bold text-black dark:text-white"
+            className="flex items-center gap-2 text-xl sm:text-2xl font-bold"
           >
-            <Image
-              src="/ah.png"
-              alt="ArtHub Logo"
-              width={32}
-              height={32}
-              className="rounded-md"
-              priority
-            />
+            <Image src="/ah.png" alt="ArtHub" width={32} height={32} />
             ArtHub
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden items-center gap-6 md:flex">
+          <div className="hidden md:flex items-center gap-6">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-medium text-gray-700 transition hover:text-black dark:text-gray-300 dark:hover:text-white"
+                className="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white"
               >
                 {link.name}
               </Link>
@@ -75,16 +67,17 @@ export default function Navbar() {
 
             <ThemeSwitch />
 
-            {/* Auth Button */}
             {user ? (
-              <div className=" flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <Avatar>
-                  <Avatar.Image alt={user?.name} src={user?.image} />
-                  <Avatar.Fallback>Hi</Avatar.Fallback>
+                  <Avatar.Image src={user?.image} alt={user?.name} />
+                  <Avatar.Fallback>{user?.name?.[0]}</Avatar.Fallback>
                 </Avatar>
+
                 <Button
+                  size="sm"
                   onClick={handleLogout}
-                  className="rounded-lg bg-red-500 px-4 py-2 text-white transition hover:bg-red-600"
+                  className="bg-red-500 text-white"
                 >
                   Logout
                 </Button>
@@ -92,7 +85,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/signin"
-                className="rounded-lg bg-black px-4 py-2 text-white transition hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+                className="bg-black text-white px-4 py-2 rounded-lg dark:bg-white dark:text-black"
               >
                 Sign In
               </Link>
@@ -100,61 +93,74 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Button */}
-          <Button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
+          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden p-2">
             {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </Button>
+          </button>
+        </div>
+      </div>
+
+      {/* Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 md:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Mobile Menu Drawer */}
+      <div
+        className={`fixed top-0 right-0 h-full w-72 bg-white dark:bg-zinc-950 shadow-lg transform transition-transform duration-300 md:hidden z-50 ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex items-center justify-between p-4 border-b dark:border-zinc-800">
+          <span className="font-bold">Menu</span>
+          <button onClick={() => setIsOpen(false)}>
+            <X />
+          </button>
         </div>
 
-        {/* Mobile Menu */}
-        {isOpen && (
-          <div className="space-y-4 border-t py-4 md:hidden dark:border-zinc-800">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="block text-gray-700 dark:text-gray-300"
-                onClick={() => setIsOpen(false)}
-              >
-                {link.name}
-              </Link>
-            ))}
-
-            <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="flex items-center gap-2"
+        <div className="p-4 space-y-4">
+          {links.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setIsOpen(false)}
+              className="block text-gray-700 dark:text-gray-300"
             >
-              {theme === "dark" ? (
-                <>
-                  <Sun size={18} />
-                  Light Mode
-                </>
-              ) : (
-                <>
-                  <Moon size={18} />
-                  Dark Mode
-                </>
-              )}
-            </button>
+              {link.name}
+            </Link>
+          ))}
 
-            {/* Mobile Auth */}
+          {/* Theme toggle */}
+          <button
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="flex items-center gap-2"
+          >
+            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            Toggle Theme
+          </button>
+
+          {/* Auth */}
+          <div className="pt-4 border-t dark:border-zinc-800">
             {user ? (
               <button
                 onClick={handleLogout}
-                className="block w-full rounded-lg bg-red-500 px-4 py-2 text-white"
+                className="w-full bg-red-500 text-white py-2 rounded-lg"
               >
                 Logout
               </button>
             ) : (
               <Link
                 href="/signin"
-                className="block rounded-lg bg-black px-4 py-2 text-center text-white dark:bg-white dark:text-black"
                 onClick={() => setIsOpen(false)}
+                className="block text-center bg-black text-white py-2 rounded-lg dark:bg-white dark:text-black"
               >
                 Sign In
               </Link>
             )}
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );

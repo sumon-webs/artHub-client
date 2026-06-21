@@ -20,7 +20,7 @@ export const getArtWorks = async ({
   if (category && category !== "all") params.append("category", category);
   if (search) params.append("search", search);
   if (sortByPrice) params.append("sortByPrice", sortByPrice);
-console.log(params)
+  
   const endpoint = `/api/artworks?${params.toString()}`;
 
   return await fetchServer({ endpoint });
