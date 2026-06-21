@@ -1,4 +1,4 @@
-import { UsersTable } from "@/components/dahsboard/users/UsersTable";
+import { UsersTable } from "@/components/dahsboard/admin/UsersTable";
 import { getUsers } from "@/lib/api/users";
 
 const UserManagePage = async () => {
@@ -6,11 +6,11 @@ const UserManagePage = async () => {
   const users = userRes?.data?.data || [];
 
   return (
-    <div className="min-h-screen px-4 py-6 bg-gray-50 dark:bg-gray-900 transition-colors">
+    <div className="min-h-screen px-4 py-6 bg-gray-50 dark:bg-gray-950 transition-colors">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
+          <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">
             User Management
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400">

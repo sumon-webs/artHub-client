@@ -12,3 +12,15 @@ export const updateUserPlan = async (userId, planId) => {
 
   return res;
 };
+
+
+
+export const updateUserRole = async (userId, role) => {
+  const res = await serverMutation({
+    endpoint: `/api/users/${userId}/role`,
+    method: "PATCH",
+    body: { role },
+  });
+
+  return res;
+};

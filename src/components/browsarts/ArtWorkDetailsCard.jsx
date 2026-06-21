@@ -82,7 +82,7 @@ export function ArtworkDetailsCard({ artwork, user, limitReached }) {
       className="max-w-5xl mx-auto py-12"
     >
       {/* 🚨 LIMIT WARNING */}
-      {limitReached && (
+      {limitReached && isBuyer && (
         <div className="mb-4 rounded-xl border border-red-300 bg-red-50 p-4 text-red-700 font-medium space-y-3">
           <p>
             ⚠️ Your plan limit has been reached. You can still view artwork, but
@@ -91,9 +91,7 @@ export function ArtworkDetailsCard({ artwork, user, limitReached }) {
 
           <div className="flex items-center gap-3">
             <Link href="/dashboard/buyer/pricing">
-              <Button color="warning" >
-                🚀 Upgrade Plan
-              </Button>
+              <Button color="warning">🚀 Upgrade Plan</Button>
             </Link>
 
             <span className="text-sm text-red-600">

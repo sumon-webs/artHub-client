@@ -8,8 +8,6 @@ import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 
 export function SignupForm() {
-  const [role, setRole] = useState("buyer");
-  const [plan, setPlan] = useState("buyer-free");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [form, setForm] = useState({
@@ -23,7 +21,7 @@ export function SignupForm() {
   const googleSignIn = async () => {
     await authClient.signIn.social({
       provider: "google",
-      callbackURL: "/onboarding", // 👈 গুরুত্বপূর্ণ
+      callbackURL: "/onboarding",
     });
   };
   const [error, setError] = useState("");
@@ -48,10 +46,10 @@ export function SignupForm() {
       toast.error("Passwords do not match!");
       return;
     }
-
+    const plan = form.role === "buyer" ? "buyer-free" : "artist-free";
     try {
       setLoading(true);
-      {form.role === "buyer"?"buyer-free": 'artist-free'}
+
       const { data, error } = await authClient.signUp.email({
         name: form.name,
         email: form.email,
@@ -59,7 +57,7 @@ export function SignupForm() {
         role: form.role,
         plan: plan,
       });
-
+      console.log(error);
       if (error) {
         toast.error(error.message || "Signup failed!");
         return;
@@ -189,7 +187,7 @@ export function SignupForm() {
               role: e.target.value,
             }))
           }
-          className="w-full p-2 border rounded-md"
+          className="w-full p-2 border rounded-md bg-transparent dark:bg-zinc-900 dark:border-zinc-700"
         >
           <option value="buyer">Buyer</option>
           <option value="artist">Artist</option>

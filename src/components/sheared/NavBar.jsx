@@ -34,7 +34,7 @@ export default function Navbar() {
     user?.role === "admin"
       ? { name: "Dashboard", href: "/dashboard/admin/manage-users" }
       : user?.role === "artist"
-        ? { name: "Dashboard", href: "/dashboard/artist" }
+        ? { name: "Dashboard", href: "/dashboard/artist/manage-artworks" }
         : user?.role === "buyer"
           ? { name: "Dashboard", href: "/dashboard/buyer/purchase-history" }
           : null;

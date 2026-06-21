@@ -1,20 +1,35 @@
 "use client";
 
+import { updateUserRole } from "@/lib/actions/user";
 import { Table, Button } from "@heroui/react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export function UsersTable({ users = [] }) {
   const [data, setData] = useState(users);
 
-  const handleRoleChange = (id, role) => {
+  const handleRoleChange = async (id, role) => {
+    const previousData = [...data];
+
     const updated = data.map((user) =>
       user._id === id ? { ...user, role } : user,
     );
 
     setData(updated);
 
-    // 👉 এখানে API call দিবে পরে
-    // await updateUserRole(id, role);
+    try {
+      const res = await updateUserRole(id, role);
+
+      if (res?.success) {
+        toast.success("Role updated successfully");
+      } else {
+        setData(previousData);
+        toast.error(res?.message || "Failed to update role");
+      }
+    } catch (error) {
+      setData(previousData);
+      toast.error("Something went wrong");
+    }
   };
 
   if (!data.length) {
@@ -30,7 +45,7 @@ export function UsersTable({ users = [] }) {
       <Table.ScrollContainer>
         <Table.Content aria-label="Users Table" className="min-w-[700px]">
           <Table.Header>
-            <Table.Column isRowHeader>Name</Table.Column>
+            <Table.Column>Name</Table.Column>
             <Table.Column>Email</Table.Column>
             <Table.Column>Role</Table.Column>
             <Table.Column>Actions</Table.Column>
@@ -39,27 +54,19 @@ export function UsersTable({ users = [] }) {
           <Table.Body>
             {data.map((user) => (
               <Table.Row key={user._id}>
-                <Table.Cell className="text-gray-800 dark:text-gray-100">
-                  {user.name}
-                </Table.Cell>
-
-                <Table.Cell className="text-gray-600 dark:text-gray-300">
-                  {user.email}
-                </Table.Cell>
-
-                <Table.Cell className="capitalize text-gray-700 dark:text-gray-200">
-                  {user.role}
-                </Table.Cell>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell className="capitalize">{user.role}</Table.Cell>
 
                 <Table.Cell>
                   <div className="flex gap-2 flex-wrap">
                     <Button
                       size="sm"
                       color="primary"
-                      isDisabled={user.role === "user"}
-                      onPress={() => handleRoleChange(user._id, "user")}
+                      isDisabled={user.role === "buyer"}
+                      onPress={() => handleRoleChange(user._id, "buyer")}
                     >
-                      User
+                      Buyer
                     </Button>
 
                     <Button

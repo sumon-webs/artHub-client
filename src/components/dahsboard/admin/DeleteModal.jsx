@@ -16,7 +16,7 @@ const DeleteModal = ({ artwork }) => {
 
       toast.success("Delete succes");
       if (res?.data?.success && res?.data?.deletedCount > 0) {
-        router.push("/browse-arts");
+        router.push("/dashboard/admin/manage-artworks");
       }
     } catch (error) {
       console.error(error);

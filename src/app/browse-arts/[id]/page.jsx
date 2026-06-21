@@ -17,19 +17,20 @@ const ArtWorkDetailspage = async ({ params }) => {
 
   const buyerId = user?.id;
 
+  const artist = user?.role === "artist";
   const isOwned = artwork?.artistId === user?.id;
   const planId = user?.plan;
 
   const orderRes = await getOrders({ buyerId });
   const myOrders = orderRes?.data?.data || [];
-  
+
   const planObj = await getPlans({ planId });
   const plan = planObj?.data;
   const limitReached = plan?.max !== undefined && myOrders.length >= plan.max;
 
   return (
     <div className=" container mx-auto">
-      {isOwned && (
+      {isOwned && artist && (
         <div className="flex justify-end gap-3">
           <Link href={`/browse-arts/${artwork?._id}/edit`}>
             <Button color="primary" variant="shadow">

@@ -1,43 +1,69 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Pagination } from "@heroui/react";
 import { ArtworkCard } from "./ArtWorkCard";
-import { getArtWorks } from "@/lib/api/artworks";
 import Link from "next/link";
-import { Button } from "@heroui/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
+const categories = [
+  "abstract",
+  "surreal",
+  "3d-art",
+  "ai-art",
+  "photography",
+  "modern",
+  "minimalist",
+  "digital-art",
+  "realism",
+];
 
-const BrowsArtsSection = ({ initialData }) => {
-  const [data, setData] = useState(initialData || []);
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("all");
-  const [sortByPrice, setSortByPrice] = useState("");
-  const [loading, setLoading] = useState(false);
-  // unique categories
-  const categories = useMemo(() => {
-    const cats = initialData.map((item) => item.category);
-    return ["all", ...new Set(cats)];
-  }, [initialData]);
+const BrowsArtsSection = ({ initialData, pagination }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  // API call with debounce
+  const artworks = initialData;
+
+  const limit = pagination?.limit || 9;
+  const page = Number(pagination?.page || 1);
+  const totalPages = pagination?.totalPages;
+  const total = pagination?.total;
+
+  const [search, setSearch] = useState(searchParams.get("search") || "");
+  const [category, setCategory] = useState(searchParams.get("category") || "");
+  const [sort, setSort] = useState(searchParams.get("sortByPrice") || "");
+
+  const perPage = (page - 1) * total;
+
+  const start = (page - 1) * limit + 1;
+  const end = Math.min(page * limit, total);
+
+  const pages = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pages.push(i);
+  }
+
+  // 🔥 update URL when filter/search changes
   useEffect(() => {
-    const delay = setTimeout(async () => {
-      setLoading(true);
+    const params = new URLSearchParams(searchParams.toString());
 
-      const res = await getArtWorks({
-        search,
-        category,
-        sortByPrice,
-      });
+    if (search) params.set("search", search);
+    else params.delete("search");
 
-      setData(res?.data?.data || []);
-      setLoading(false);
-    }, 400);
+    if (category) params.set("category", category);
+    else params.delete("category");
 
-    return () => clearTimeout(delay);
-  }, [search, category, sortByPrice]);
+    if (sort) params.set("sortByPrice", sort);
+    else params.delete("sortByPrice");
+
+    params.set("page", 1); // reset page when filter changes
+
+    router.push(`/browse-arts?${params.toString()}`);
+  }, [search, category, sort]);
 
   return (
     <div className="container mx-auto">
+      <p>Sowing data {initialData?.length}</p>
+
       {/* Search + Filter + Sort */}
       <div className="flex flex-col md:flex-row gap-3 mb-6">
         {/* Search */}
@@ -61,17 +87,18 @@ const BrowsArtsSection = ({ initialData }) => {
           text-slate-900 dark:text-white
           border-slate-200 dark:border-slate-700"
         >
-          {categories.map((cat) => (
+          <option value="">All Categories</option>
+          {categories?.map((cat) => (
             <option key={cat} value={cat}>
               {cat}
             </option>
           ))}
         </select>
 
-        {/* Sort by price */}
+        {/* Sort */}
         <select
-          value={sortByPrice}
-          onChange={(e) => setSortByPrice(e.target.value)}
+          value={sort}
+          onChange={(e) => setSort(e.target.value)}
           className="w-full md:w-1/4 px-4 py-2 border rounded-lg
           bg-white dark:bg-slate-900
           text-slate-900 dark:text-white
@@ -83,18 +110,49 @@ const BrowsArtsSection = ({ initialData }) => {
         </select>
       </div>
 
-      {/* Loading */}
-      {loading && (
-        <p className="text-center text-slate-500 dark:text-slate-300 mb-4">
-          Loading artworks...
-        </p>
-      )}
-
       {/* Grid */}
-      <div >
-        <ArtworkCard key={data._id} artWorks={data} />
+      <div>
+        <ArtworkCard artWorks={artworks} />
       </div>
-      
+
+      {/* Pagination */}
+      <Pagination size="sm">
+        <Pagination.Summary>
+          {start} to {end} of {total} results
+        </Pagination.Summary>
+
+        <Pagination.Content>
+          <Pagination.Item>
+            <Pagination.Previous isDisabled={page === 1}>
+              <Link
+                href={`/browse-arts?page=${page - 1}&search=${search}&category=${category}&sortByPrice=${sort}`}
+              >
+                Prev
+              </Link>
+            </Pagination.Previous>
+          </Pagination.Item>
+
+          {pages.map((p) => (
+            <Pagination.Item key={p}>
+              <Link
+                href={`/browse-arts?page=${p}&search=${search}&category=${category}&sortByPrice=${sort}`}
+              >
+                <Pagination.Link isActive={p === page}>{p}</Pagination.Link>
+              </Link>
+            </Pagination.Item>
+          ))}
+
+          <Pagination.Item>
+            <Pagination.Next isDisabled={page === totalPages}>
+              <Link
+                href={`/browse-arts?page=${page + 1}&search=${search}&category=${category}&sortByPrice=${sort}`}
+              >
+                Next
+              </Link>
+            </Pagination.Next>
+          </Pagination.Item>
+        </Pagination.Content>
+      </Pagination>
     </div>
   );
 };

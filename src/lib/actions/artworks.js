@@ -23,11 +23,10 @@ export const updateArtwork = async (id, data) => {
   return res;
 };
 
-export const deleteArtwork = async (id, artistId) => {
+export const deleteArtwork = async (id) => {
   const res = await serverMutation({
     endpoint: `/api/artworks/${id}`,
     method: "DELETE",
-    body: { artistId },
   });
   return res;
 };
