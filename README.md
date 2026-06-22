@@ -124,7 +124,6 @@ ArtHub is a full-stack MERN-based online art marketplace designed to connect art
 
 ### Deployment
 - Vercel (Client)
-- Render / Node Server
 
 ---
 
