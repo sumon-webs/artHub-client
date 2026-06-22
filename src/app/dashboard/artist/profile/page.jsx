@@ -21,8 +21,8 @@ const ArtistProfilePage = async () => {
 
   const res = await getTopArtists({ artistId });
   const artistArr = res?.data?.data;
-  const artistDetails = artistArr.find(art => art.totalSales)
-  
+  const artistDetails = artistArr.find((art) => art.totalSales);
+
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="mx-auto max-w-7xl space-y-6">
@@ -68,7 +68,7 @@ const ArtistProfilePage = async () => {
               <div>
                 <p className="text-sm text-default-500">Total Artworks</p>
                 <h2 className="mt-2 text-3xl font-bold">
-                  {artWorks?.data?.count}
+                  {artWorks.data.data.length}
                 </h2>
               </div>
               <Palette className="text-primary" size={30} />

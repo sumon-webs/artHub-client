@@ -1,5 +1,6 @@
 "use server";
 
+import { authHeaders } from "../core/authHeaders";
 import { fetchServer } from "../core/fetchServer";
 
 
@@ -8,6 +9,7 @@ export const getUsers = async ({
   search = "",
   userId = "",
 } = {}) => {
+  const header = await authHeaders()
   const params = new URLSearchParams();
 
   if (role) params.append("role", role);
@@ -18,6 +20,7 @@ export const getUsers = async ({
 
   const res = await fetchServer({
     endpoint,
+    headers:header
   });
 
   return res;

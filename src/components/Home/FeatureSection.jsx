@@ -12,32 +12,40 @@ const FeatureSection = async () => {
   const featured = artWorks.slice(0, 6);
 
   return (
-    <section className="w-full py-16 bg-slate-50 dark:bg-slate-950 transition-colors duration-300 border-b">
-      {/* Header */}
-      <div className="max-w-6xl mx-auto text-center mb-12 px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">
-          Featured Artworks
-        </h2>
+    <section className=" py-16 bg-slate-50 dark:bg-slate-950 transition-colors duration-300 border-b">
+      <div className=" container mx-auto">
+        {/* Header */}
+        <div className="max-w-6xl mx-auto text-center mb-12 px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">
+            Featured Artworks
+          </h2>
 
-        <p className="mt-3 text-slate-600 dark:text-slate-300">
-          Handpicked digital creations from top artists
-        </p>
-      </div>
+          <p className="mt-3 text-slate-600 dark:text-slate-300">
+            Handpicked digital creations from top artists
+          </p>
+        </div>
 
-      {/* Grid */}
-      <div className="container mx-auto px-4">
-        <ArtworkCard artWorks={featured} />
-      </div>
-      <div className="mt-10">
-        <Link href="/browse-arts" className="flex justify-center">
-          <Button
-            size="lg"
-            className="bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-6 py-3 rounded-xl font-medium shadow-md hover:scale-105 transition-all duration-300 flex items-center gap-2"
-          >
-            Browse All Artworks
-            <ArrowRight size={18} />
-          </Button>
-        </Link>
+        {/* Grid */}
+        {featured.length > 0 ? (
+          <ArtworkCard artWorks={featured} />
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <h3 className="text-2xl font-semibold text-slate-700 dark:text-slate-200">
+              No Artworks Available
+            </h3>
+
+            <p className="mt-3 max-w-md text-slate-500 dark:text-slate-400">
+              There are currently no featured artworks to display. Please check
+              back later for new and exciting creations from our artists.
+            </p>
+
+            <Link href="/browse-arts" className="mt-6">
+              <Button color="primary" variant="flat">
+                Explore Gallery
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -1,5 +1,6 @@
 "use server";
 
+import { authHeaders } from "../core/authHeaders";
 import { fetchServer } from "../core/fetchServer";
 
 export const getPlanPurchases = async ({
@@ -8,6 +9,7 @@ export const getPlanPurchases = async ({
   status = "",
 } = {}) => {
   const params = new URLSearchParams();
+  const header = await authHeaders();
 
   if (buyerId) params.append("buyerId", buyerId);
   if (planId) params.append("planId", planId);
@@ -21,6 +23,7 @@ export const getPlanPurchases = async ({
 
   const res = await fetchServer({
     endpoint,
+    headers:header
   });
 
   return res;

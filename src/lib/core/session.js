@@ -13,6 +13,12 @@ export const getUserSession = async () => {
   return session;
 };
 
+export const getUserToken = async () => {
+  const userSession = await getUserSession();
+  const token = userSession?.session?.token;
+  return token
+};
+
 // Check specific role
 export const hasRole = async (role) => {
   const session = await getUserSession();

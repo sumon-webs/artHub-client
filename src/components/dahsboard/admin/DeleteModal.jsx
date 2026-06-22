@@ -13,10 +13,12 @@ const DeleteModal = ({ artwork }) => {
   const handleDelete = async (id) => {
     try {
       const res = await deleteArtwork(id);
-
-      toast.success("Delete succes");
-      if (res?.data?.success && res?.data?.deletedCount > 0) {
+      if (res?.success && res?.data?.deletedCount > 0) {
         router.push("/dashboard/admin/manage-artworks");
+        toast.success("Delete succes");
+      }
+      if(!res.success){
+        toast.error(res.message)
       }
     } catch (error) {
       console.error(error);

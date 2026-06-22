@@ -14,35 +14,25 @@ export function ArtworkDetailsCard({ artwork, user, limitReached }) {
   const isLoggedIn = !!user;
   const isBuyer = user?.role === "buyer";
 
-  // FINAL ACCESS RULE
   const canInteract = isLoggedIn && isBuyer && !limitReached;
 
-  // BUY NOW
   const handleBuyNow = async () => {
     if (!canInteract) return;
 
     try {
       const res = await fetch("/api/checkout_sessions", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          artworkId: artwork._id,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ artworkId: artwork._id }),
       });
 
       const data = await res.json();
-
-      if (data.url) {
-        window.location.href = data.url;
-      }
+      if (data.url) window.location.href = data.url;
     } catch (error) {
-      console.error("Checkout error:", error);
+      console.error(error);
     }
   };
 
-  // COMMENT
   const handleComment = async () => {
     if (!canInteract || !comment.trim()) return;
 
@@ -69,7 +59,7 @@ export function ArtworkDetailsCard({ artwork, user, limitReached }) {
         setComment("");
       }
     } catch (error) {
-      console.error("Comment error:", error);
+      console.error(error);
     }
   };
 
@@ -79,44 +69,66 @@ export function ArtworkDetailsCard({ artwork, user, limitReached }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-5xl mx-auto py-12"
+      className="max-w-5xl mx-auto p-4 md:p-10 space-y-8"
     >
-      {/* 🚨 LIMIT WARNING */}
+      {/* LIMIT WARNING */}
       {limitReached && isBuyer && (
-        <div className="mb-4 rounded-xl border border-red-300 bg-red-50 p-4 text-red-700 font-medium space-y-3">
-          <p>
-            ⚠️ Your plan limit has been reached. You can still view artwork, but
-            buying and commenting are disabled.
+        <div
+          className="
+            rounded-2xl
+            border border-red-300 dark:border-red-800
+            bg-red-50 dark:bg-red-900/20
+            p-4 md:p-5
+            text-red-700 dark:text-red-300
+            space-y-3
+          "
+        >
+          <p className="text-sm md:text-base">
+            ⚠️ Your plan limit has been reached. Buying and commenting are
+            disabled.
           </p>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
             <Link href="/dashboard/buyer/pricing">
-              <Button color="warning">🚀 Upgrade Plan</Button>
+              <Button color="warning" className="w-full sm:w-auto">
+                🚀 Upgrade Plan
+              </Button>
             </Link>
 
-            <span className="text-sm text-red-600">
-              Upgrade to continue buying & commenting
+            <span className="text-xs md:text-sm text-red-600 dark:text-red-300">
+              Upgrade to continue access
             </span>
           </div>
         </div>
       )}
 
-      <Card className="overflow-hidden p-0">
+      {/* MAIN CARD */}
+      <Card
+        className="
+          overflow-hidden
+          bg-white dark:bg-slate-900
+          border border-slate-200 dark:border-slate-800
+          rounded-2xl
+        "
+      >
         {/* IMAGE */}
-        <div className="relative w-full h-[400px]">
+        <div className="relative w-full h-[250px] sm:h-[350px] md:h-[420px]">
           <Image
             src={artwork.imageUrl}
             alt={artwork.title}
             fill
             className="object-cover"
+            sizes="(max-width: 768px) 100vw, 80vw"
           />
         </div>
 
         {/* CONTENT */}
-        <div className="p-6 space-y-4">
-          <h1 className="text-2xl font-bold">{artwork.title}</h1>
+        <div className="p-5 md:p-8 space-y-5">
+          <h1 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white">
+            {artwork.title}
+          </h1>
 
-          <p className="text-sm">
+          <p className="text-sm text-slate-600 dark:text-slate-300">
             By{" "}
             <Link
               href={`/artist/${artwork.artistId}`}
@@ -126,29 +138,33 @@ export function ArtworkDetailsCard({ artwork, user, limitReached }) {
             </Link>
           </p>
 
-          <p>{artwork.description}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            {artwork.description}
+          </p>
 
-          <div className="flex gap-4 items-center text-sm">
+          {/* META */}
+          <div className="flex flex-wrap gap-3 items-center text-sm text-slate-600 dark:text-slate-300">
             <div className="flex items-center gap-1">
               <CircleDollar className="text-primary size-5" />
               <span>{artwork.price}</span>
             </div>
 
-            <span className="px-2 py-1 rounded-full bg-default-100 text-xs">
+            <span className="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-xs">
               {artwork.category}
             </span>
 
-            <span className="text-xs text-default-500">
+            <span className="text-xs text-slate-400">
               {new Date(artwork.createdAt).toLocaleDateString()}
             </span>
           </div>
 
-          {/* 🛒 BUY BUTTON */}
-          <div className="pt-4">
+          {/* BUY BUTTON */}
+          <div className="pt-2">
             <Button
               color="primary"
               disabled={!canInteract}
               onClick={handleBuyNow}
+              className="w-full sm:w-auto"
             >
               {!isLoggedIn
                 ? "Login to Buy"
@@ -162,17 +178,27 @@ export function ArtworkDetailsCard({ artwork, user, limitReached }) {
         </div>
       </Card>
 
-      {/* 💬 COMMENT SECTION */}
-      <div className="mt-8 bg-white dark:bg-slate-900 p-6 rounded-xl">
-        <h2 className="text-lg font-semibold mb-4">Comments</h2>
+      {/* COMMENTS */}
+      <div
+        className="
+          bg-white dark:bg-slate-900
+          border border-slate-200 dark:border-slate-800
+          rounded-2xl
+          p-5 md:p-8
+        "
+      >
+        <h2 className="text-lg font-semibold mb-4 text-slate-800 dark:text-white">
+          Comments
+        </h2>
 
+        {/* STATUS */}
         {!isLoggedIn ? (
           <p className="text-sm text-red-500 mb-4">Please login to comment</p>
         ) : !isBuyer ? (
           <p className="text-sm text-red-500 mb-4">Only buyers can comment</p>
         ) : limitReached ? (
           <p className="text-sm text-red-500 mb-4">
-            Your plan limit has been reached. Upgrade to continue commenting.
+            Upgrade plan to continue commenting
           </p>
         ) : null}
 
@@ -183,13 +209,22 @@ export function ArtworkDetailsCard({ artwork, user, limitReached }) {
             value={comment}
             disabled={!canInteract}
             onChange={(e) => setComment(e.target.value)}
-            className="border p-2 rounded-md"
+            className="
+              w-full
+              min-h-[90px]
+              p-3
+              rounded-lg
+              border border-slate-200 dark:border-slate-700
+              bg-white dark:bg-slate-950
+              text-slate-900 dark:text-white
+              focus:outline-none focus:ring-2 focus:ring-indigo-500
+            "
           />
 
           <Button
             onClick={handleComment}
             disabled={!canInteract}
-            className="w-fit"
+            className="w-full sm:w-auto"
           >
             Post Comment
           </Button>
@@ -198,15 +233,21 @@ export function ArtworkDetailsCard({ artwork, user, limitReached }) {
         {/* LIST */}
         <div className="mt-6 space-y-3">
           {comments.length === 0 ? (
-            <p className="text-sm text-default-500">No comments yet.</p>
+            <p className="text-sm text-slate-500">No comments yet.</p>
           ) : (
             comments.map((c) => (
               <div
                 key={c._id}
-                className="p-3 rounded-lg bg-default-100 text-sm"
+                className="
+                  p-3
+                  rounded-lg
+                  bg-slate-100 dark:bg-slate-800
+                  text-sm
+                "
               >
-                <p>{c.text}</p>
-                <span className="text-xs text-default-500">
+                <p className="text-slate-800 dark:text-slate-100">{c.text}</p>
+
+                <span className="text-xs text-slate-500">
                   {new Date(c.createdAt).toLocaleString()}
                 </span>
               </div>

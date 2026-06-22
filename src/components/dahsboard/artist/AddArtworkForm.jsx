@@ -3,8 +3,6 @@
 import React, { useState } from "react";
 import {
   Button,
-  Description,
-  FieldError,
   Form,
   Input,
   Label,
@@ -32,21 +30,21 @@ export default function AddArtWorkForm() {
     "minimalist",
     "3d-art",
     "mixed-media",
-    "others"
+    "others",
   ];
-  const [loading, setLoading] = useState(false);
 
+  const [loading, setLoading] = useState(false);
   const route = useRouter();
 
-  const { data: session, ispending } = authClient.useSession();
+  const { data: session } = authClient.useSession();
   const user = session?.user;
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
     const formData = new FormData(e.currentTarget);
     const file = formData.get("image");
 
-    // 1. Upload Image to ImgBB
     const imgData = new FormData();
     imgData.append("image", file);
 
@@ -60,30 +58,32 @@ export default function AddArtWorkForm() {
           body: imgData,
         },
       );
-      const result = await response.json();
-      const imageUrl = result.data.url;
 
-      // 2. Prepare Final Data
+      const result = await response.json();
+      const imageUrl = result?.data?.url;
+
       const finalData = {
         title: formData.get("title"),
         description: formData.get("description"),
         price: formData.get("price"),
         category: formData.get("category"),
-        imageUrl: imageUrl,
+        imageUrl,
         artistId: user?.id,
-        artistName:user?.name
+        artistName: user?.name,
       };
 
       const res = await postArtwork(finalData);
+
       if (!res.success) {
-        toast.error(success.message);
+        toast.error(res?.message || "Failed to create artwork");
         return;
       }
 
-      toast.success("Product Created Successfully!");
+      toast.success("Artwork created successfully 🎉");
 
       route.push("/dashboard/artist/manage-artworks");
     } catch (error) {
+      console.log(error);
       toast.error("Upload failed");
     } finally {
       setLoading(false);
@@ -91,54 +91,94 @@ export default function AddArtWorkForm() {
   };
 
   return (
-    <Card className="p-6 max-w-lg mx-auto dark:bg-zinc-900">
-      <Form className="flex flex-col gap-4" onSubmit={onSubmit}>
-        <h2 className="text-xl font-bold">Add New Product</h2>
+    <Card
+      className="
+        w-full
+        max-w-2xl
+        mx-auto
+        p-4 md:p-8
+        bg-white dark:bg-zinc-900
+        border border-slate-200 dark:border-zinc-800
+        rounded-2xl
+        shadow-lg
+      "
+    >
+      <Form onSubmit={onSubmit} className="flex flex-col gap-5">
+        {/* TITLE */}
+        <h2 className="text-2xl font-bold text-center text-slate-800 dark:text-white">
+          Add New Artwork
+        </h2>
 
+        {/* TITLE INPUT */}
         <TextField isRequired name="title">
           <Label>Title</Label>
-          <Input placeholder="Product name" />
+          <Input placeholder="Enter artwork title" className="w-full" />
         </TextField>
 
+        {/* DESCRIPTION */}
         <TextField isRequired name="description">
           <Label>Description</Label>
-          <TextArea placeholder="Describe the item..." />
+          <TextArea placeholder="Describe your artwork..." className="w-full" />
         </TextField>
 
+        {/* PRICE */}
         <TextField isRequired name="price" type="number">
           <Label>Price</Label>
-          <Input placeholder="0.00" />
+          <Input placeholder="0.00" className="w-full" />
         </TextField>
 
-        <Select name="category" isRequired>
+        {/* CATEGORY */}
+        <TextField isRequired name="category">
           <Label>Category</Label>
-          <Select.Trigger>
-            <Select.Value placeholder="Select category" />
-          </Select.Trigger>
 
-          <Select.Popover>
-            <ListBox>
-              {categories.map((cat) => (
-                <ListBox.Item key={cat} id={cat}>
-                  {cat}
-                </ListBox.Item>
-              ))}
-            </ListBox>
-          </Select.Popover>
-        </Select>
+          <Select>
+            <Select.Trigger className="w-full">
+              <Select.Value placeholder="Select category" />
+            </Select.Trigger>
 
+            <Select.Popover>
+              <ListBox>
+                {categories.map((cat) => (
+                  <ListBox.Item key={cat} id={cat}>
+                    {cat}
+                  </ListBox.Item>
+                ))}
+              </ListBox>
+            </Select.Popover>
+          </Select>
+        </TextField>
+
+        {/* IMAGE */}
         <div className="flex flex-col gap-1">
-          <Label>Product Image</Label>
+          <Label>Artwork Image</Label>
+
           <input
             type="file"
             name="image"
             accept="image/*"
             required
-            className="text-sm"
+            className="
+              w-full
+              text-sm
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-lg
+              file:border-0
+              file:bg-indigo-500 file:text-white
+              hover:file:bg-indigo-600
+              dark:text-white
+            "
           />
         </div>
 
-        <Button type="submit">{loading ? "Submiting" : "Submit"}</Button>
+        {/* SUBMIT */}
+        <Button
+          type="submit"
+          isDisabled={loading}
+          className="w-full mt-2"
+          color="primary"
+        >
+          {loading ? "Uploading..." : "Create Artwork"}
+        </Button>
       </Form>
     </Card>
   );

@@ -4,7 +4,7 @@ import { getArtWorks } from "@/lib/api/artworks";
 const DashboardManageArtWorks = async () => {
   const artsRes = await getArtWorks();
   const artWorks = artsRes?.data?.data || [];
-
+  
   return (
     <div className="space-y-6 p-4 md:p-6">
       {/* Header */}

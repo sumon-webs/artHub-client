@@ -1,5 +1,6 @@
 "use server";
 
+import { authHeaders } from "../core/authHeaders";
 import { fetchServer } from "../core/fetchServer";
 
 export const getTopArtists = async ({
@@ -7,6 +8,7 @@ export const getTopArtists = async ({
   search = "",
   sortBy = "",
 } = {}) => {
+  const header = await authHeaders()
   const params = new URLSearchParams();
   
   if (artistId) params.append("artistId", artistId);
@@ -17,6 +19,7 @@ export const getTopArtists = async ({
 
   const res = await fetchServer({
     endpoint,
+    headers:header
   });
 
   return res;

@@ -83,24 +83,58 @@ export function SignupForm() {
   };
 
   return (
-    <Card className="w-[900px] flex flex-row shadow-lg overflow-hidden">
+    <Card
+      className="
+    w-full max-w-5xl
+    flex flex-col lg:flex-row
+    overflow-hidden
+    shadow-2xl
+    bg-white dark:bg-zinc-950
+    border border-gray-200 dark:border-zinc-800
+  "
+    >
       {/* LEFT SIDE */}
-      <div className="w-2/5 bg-gradient-to-b from-purple-700 to-indigo-900 text-white p-8 flex flex-col justify-center items-center text-center gap-6">
-        <h2 className="text-3xl font-bold">Welcome to ArtHub</h2>
-        <p className="text-sm opacity-80">
+      <div
+        className="
+    w-full lg:w-2/5
+    bg-gradient-to-br
+    from-purple-700 via-indigo-700 to-indigo-900
+    text-white
+    p-8 md:p-12
+    flex flex-col
+    justify-center
+    items-center
+    text-center
+    gap-6
+  "
+      >
+        <h2 className="text-3xl md:text-4xl font-bold">Welcome to ArtHub</h2>
+
+        <p className="text-sm md:text-base opacity-90 max-w-sm">
           Join ArtHub to explore, buy, or sell original digital artworks.
         </p>
 
-        <Link href={"/signin"}>
-          <Button type="submit" color="primary" className="mt-4 w-full">
+        <Link href="/signin" className="w-full max-w-xs">
+          <Button
+            color="default"
+            variant="flat"
+            className="w-full bg-white text-black hover:bg-gray-200"
+          >
             SIGN IN
           </Button>
         </Link>
       </div>
 
       {/* RIGHT SIDE */}
-      <form onSubmit={handleSubmit} className="w-3/5 p-12 flex flex-col gap-4">
-        <h2 className="text-2xl font-bold text-center">
+      <form
+        onSubmit={handleSubmit}
+        className="
+    w-full lg:w-3/5
+    p-6 md:p-10 lg:p-12
+    flex flex-col gap-4
+  "
+      >
+        <h2 className="text-2xl md:text-3xl font-bold text-center text-black dark:text-white">
           Create ArtHub Account
         </h2>
 
@@ -121,7 +155,16 @@ export function SignupForm() {
         {/* Social Buttons */}
         <div className="flex gap-4 justify-center">
           {["G", "f", "in"].map((icon) => (
-            <Button key={icon} isIconOnly variant="flat" className="rounded-md">
+            <Button
+              key={icon}
+              isIconOnly
+              variant="bordered"
+              className="
+        rounded-xl
+        border-gray-300
+        dark:border-zinc-700
+      "
+            >
               {icon}
             </Button>
           ))}
@@ -229,6 +272,15 @@ export function SignupForm() {
           <span className="text-base">🌐</span>
           Continue with Google
         </Button>
+        <p className="text-center text-sm text-default-500">
+          Already have an account?{" "}
+          <Link
+            href="/signin"
+            className="text-primary font-semibold hover:underline"
+          >
+            Sign In
+          </Link>
+        </p>
       </form>
     </Card>
   );
