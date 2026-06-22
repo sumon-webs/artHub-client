@@ -17,10 +17,12 @@ export const postArtwork = async (data) => {
 };
 
 export const updateArtwork = async (id, data) => {
+  const header = await authHeaders()
   const res = await serverMutation({
     endpoint: `/api/artworks/${id}`,
     method: "PATCH",
     body: data,
+    headers:header
   });
 
   return res;

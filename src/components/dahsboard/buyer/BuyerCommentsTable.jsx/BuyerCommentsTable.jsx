@@ -98,7 +98,7 @@ export default function UsersCommentsTable({ comments = [], userId }) {
                               <TextArea
                                 aria-label="Quick project update"
                                 className="h-32 w-96"
-                                defaultValue={comment}
+                                defaultValue={c.text}
                                 onChange={(e) => setText(e.target.value)}
                                 placeholder="Update your comment..."
                               />

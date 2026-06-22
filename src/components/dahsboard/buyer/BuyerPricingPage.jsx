@@ -16,6 +16,7 @@ const BuyerPricingPage = ({ user, orderRes, planObj }) => {
 
   const currentPlan = allPlans.find((p) => p.planId === currentPlanId);
   const used = myOrders.length;
+  
 
   const getRemaining = (plan) => {
     if (!plan) return 0;

@@ -2,13 +2,16 @@
 
 import { revalidatePath } from "next/cache";
 import { serverMutation } from "../core/serverMutation";
+import { authHeaders } from "../core/authHeaders";
 
 // CREATE COMMENT
 export const createComment = async (data) => {
+  const header = await authHeaders();
   const res = await serverMutation({
     endpoint: "/api/comments",
     method: "POST",
     body: data,
+    headers: header,
   });
 
   if (res?.success) {
@@ -20,6 +23,7 @@ export const createComment = async (data) => {
 
 // DELETE COMMENT
 export const deleteComment = async (id) => {
+  const header = await authHeaders();
   if (!id) {
     return {
       success: false,
@@ -30,6 +34,7 @@ export const deleteComment = async (id) => {
   const res = await serverMutation({
     endpoint: `/api/comments/${id}`,
     method: "DELETE",
+    headers: header,
   });
 
   if (res?.data?.deletedCount > 0 || res?.success) {
@@ -40,7 +45,7 @@ export const deleteComment = async (id) => {
 };
 
 export const updateComment = async ({ id, text, userId }) => {
-  console.log(id)
+  const header = await authHeaders()
   if (!id) {
     return {
       success: false,
@@ -62,6 +67,7 @@ export const updateComment = async ({ id, text, userId }) => {
       text,
       userId, // optional but useful for ownership check
     },
+    headers:header
   });
 
   if (res?.success) {

@@ -1,3 +1,4 @@
+import { authHeaders } from "../core/authHeaders";
 import { fetchServer } from "../core/fetchServer";
 
 export const getCommentsByBuyerId = async ({
@@ -7,6 +8,8 @@ export const getCommentsByBuyerId = async ({
 } = {}) => {
     
   const params = new URLSearchParams();
+
+  const header = await authHeaders()
 
   if (artworkId) params.append("artworkId", artworkId);
   if (userId) params.append("userId", userId);
@@ -18,6 +21,7 @@ export const getCommentsByBuyerId = async ({
 
   const res = await fetchServer({
     endpoint,
+    headers:header
   });
 
   return res;

@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { CircleDollar } from "@gravity-ui/icons";
 import { useState } from "react";
 import { createComment } from "@/lib/actions/comment";
+import toast from "react-hot-toast";
 
 export function ArtworkDetailsCard({ artwork, user, limitReached }) {
   const [comment, setComment] = useState("");
@@ -44,8 +45,11 @@ export function ArtworkDetailsCard({ artwork, user, limitReached }) {
         userName: user?.name,
         userImage: user?.image || "",
       });
-
+      if(!res?.success){
+        toast.error(res.message)
+      }
       if (res?.success) {
+        toast.success(res.message)
         setComments((prev) => [
           {
             _id: res?.insertedId,

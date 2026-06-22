@@ -7,7 +7,7 @@ const CommentsPage = async () => {
   const session = await getUserSession();
   const userId = session?.user?.id;
 
-  const commentObj = await getCommentsByBuyerId(userId);
+  const commentObj = await getCommentsByBuyerId({userId});
   const comments = commentObj?.data?.data || [];
 
   const hasComments = comments.length > 0;

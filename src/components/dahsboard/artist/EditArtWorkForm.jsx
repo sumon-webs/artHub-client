@@ -53,7 +53,7 @@ export default function EditArtWorkForm({ artwork }) {
       console.log(res);
       if (res?.success) {
         toast.success("Artwork updated successfully!");
-        router.push(`/browse-arts/${artwork?._id}`);
+        router.push(`/dashboard/artist/manage-artworks`);
       } else {
         throw new Error(res?.message || "Update failed");
       }
