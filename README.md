@@ -13,7 +13,9 @@ A modern digital marketplace where artists can showcase, manage, and sell their 
 # 📸 Project Screenshot
 
 ```md
-![ArtHub Screenshot]([./public/project-preview.png](https://res.cloudinary.com/dyrgvsedy/image/upload/v1783591256/screencapture-arthub-client-ten-vercel-app-2026-04-16-01_10_29_ow5mdw.png))
+<p align="center">
+  <img src="[https://komarev.com/ghpvc/?username=sumon-webs&label=Profile%20Views&color=0e75b6&style=flat" alt="Profile Views](https://res.cloudinary.com/dyrgvsedy/image/upload/v1783591256/screencapture-arthub-client-ten-vercel-app-2026-04-16-01_10_29_ow5mdw.png)"/>
+</p>
 ```
 
 ---
