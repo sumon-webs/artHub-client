@@ -168,8 +168,8 @@ ArtHub is a full-stack MERN-based online art marketplace built to connect artist
 ## 1. Clone the repositories
 
 ```bash
-git clone <client-repository-url>
-git clone <server-repository-url>
+git clone https://github.com/sumon-webs/artHub-client
+git clone https://github.com/sumon-webs/artHub-server
 ```
 
 ## 2. Install dependencies
