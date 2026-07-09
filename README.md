@@ -2,154 +2,276 @@
 
 A modern digital marketplace where artists can showcase, manage, and sell their artworks while buyers can discover and purchase unique creations.
 
-🔗 **Live Site:** https://arthub-client-ten.vercel.app/
+## 🌐 Live Project
+
+* **Live Site:** https://arthub-client-ten.vercel.app/
+* **Client Repository:** *Add Client GitHub Link*
+* **Server Repository:** *Add Server GitHub Link*
 
 ---
 
-## 📌 Project Overview
+# 📸 Project Screenshot
 
-ArtHub is a full-stack MERN-based online art marketplace designed to connect artists, buyers, and admins in one ecosystem. The platform includes role-based dashboards, subscription plans, artwork management, purchase tracking, and analytics features.
+> Add a clean screenshot here.
 
----
+```
+/public/project-preview.png
+```
 
-## ✨ Key Features
+or
 
-### 👨‍🎨 Artist Features
-- Secure artist registration and authentication.
-- Dedicated artist dashboard.
-- Add, update, and delete artworks.
-- Manage personal artwork collection.
-- View artwork statistics and activity.
-
----
-
-### 🛒 Buyer Features
-- Browse and explore artworks from different artists.
-- View detailed artwork information.
-- Purchase subscription plans.
-- Save favorite artworks.
-- View purchase history.
-- Personalized buyer dashboard.
+```md
+![ArtHub Screenshot](./public/project-preview.png)
+```
 
 ---
 
-### 🛡️ Admin Features
-- Manage all users (artists & buyers).
-- Approve or control user accounts.
-- Manage all artworks across platform.
-- Delete or moderate inappropriate artworks.
-- View platform analytics dashboard.
-- Monitor total users, artworks, and transactions.
-- Track system activity and performance.
+# 📌 Project Overview
+
+ArtHub is a full-stack MERN-based online art marketplace built to connect artists, buyers, and administrators through a single platform. Users can showcase and manage artwork collections, purchase subscriptions, explore digital art, and monitor activities through dedicated dashboards. The platform includes secure authentication, role-based access control, analytics, and responsive UI for an engaging user experience.
 
 ---
 
-### 🔐 Authentication & Authorization
-- Secure authentication system.
-- Protected routes for authenticated users.
-- Role-based access control (Artist, Buyer, Admin).
-- JWT-based authorization for API security.
+# ✨ Core Features
+
+## 👨‍🎨 Artist
+
+* Secure registration & login
+* Artist dashboard
+* Add, edit and delete artworks
+* Manage personal artwork collection
+* View artwork statistics
+
+## 🛒 Buyer
+
+* Browse artworks
+* View artwork details
+* Save favorite artworks
+* Purchase subscription plans
+* View purchase history
+* Personalized dashboard
+
+## 🛡️ Admin
+
+* Manage users
+* Manage artworks
+* Remove inappropriate content
+* Platform analytics dashboard
+* Monitor users, artworks and activities
+
+## 🔐 Authentication & Authorization
+
+* Better Auth / JWT Authentication
+* Protected Routes
+* Role-Based Access Control
+* Middleware Authorization
+
+## 💳 Subscription System
+
+* Free Plan
+* Pro Plan
+* Premium Plan
+* Upgrade subscription anytime
+
+## 🎨 Artwork Management
+
+* Artwork CRUD Operations
+* Image Upload
+* Category Management
+* Pricing & Description
+* Artist Information
+
+## 📊 Analytics
+
+* User Statistics
+* Artwork Statistics
+* Purchase Tracking
+* Platform Insights
+
+## 📱 Responsive Design
+
+* Mobile Friendly
+* Tablet Friendly
+* Desktop Optimized
+
+## 🌙 Modern UI
+
+* Dark / Light Theme
+* Smooth Animations
+* Loading Skeletons
+* Responsive Components
 
 ---
 
-### 💳 Subscription System
-- Multiple subscription plans:
-  - Free
-  - Pro
-  - Premium
-- Feature access based on user plan.
-- Upgrade plans anytime.
+# 🛠 Technologies Used
+
+## Frontend
+
+* Next.js
+* React.js
+* Tailwind CSS
+* HeroUI
+* React Hot Toast
+* Lucide React
+* Framer Motion
+
+## Backend
+
+* Node.js
+* Express.js
+
+## Database
+
+* MongoDB
+
+## Authentication
+
+* Better Auth
+* JWT
+* Middleware Authorization
+
+## Deployment
+
+* Vercel (Frontend)
+* Render / Railway (Backend)
 
 ---
 
-### 🎨 Artwork Management
-- Create and manage artworks.
-- Upload artwork images.
-- Store artwork information including:
-  - Title
-  - Description
-  - Price
-  - Category
-  - Artist information
+# 📦 Main Dependencies
+
+### Client
+
+* next
+* react
+* react-dom
+* tailwindcss
+* @heroui/react
+* react-hot-toast
+* lucide-react
+* framer-motion
+* axios
+* better-auth
+
+### Server
+
+* express
+* mongodb
+* cors
+* dotenv
+* jsonwebtoken
+* better-auth
 
 ---
 
-### 📊 Analytics & Reports
-- Total users overview.
-- Total artworks statistics.
-- Purchase tracking and insights.
-- Revenue or engagement overview (if implemented).
-- Admin-level analytics dashboard.
+# 🚀 Run Locally
+
+## 1. Clone the repositories
+
+```bash
+git clone <client-repository-url>
+git clone <server-repository-url>
+```
+
+## 2. Install dependencies
+
+### Client
+
+```bash
+cd client
+npm install
+```
+
+### Server
+
+```bash
+cd server
+npm install
+```
+
+## 3. Configure Environment Variables
+
+Create a `.env.local` file in the client and a `.env` file in the server.
+
+Example:
+
+```env
+MONGODB_URI=
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=
+JWT_SECRET=
+NEXT_PUBLIC_API_URL=
+```
+
+## 4. Run the development server
+
+### Client
+
+```bash
+npm run dev
+```
+
+### Server
+
+```bash
+npm run dev
+```
 
 ---
 
-### 📱 Responsive Design
-- Fully responsive UI.
-- Optimized for:
-  - Mobile
-  - Tablet
-  - Desktop
+# 📂 Project Structure
+
+```
+client/
+server/
+```
 
 ---
 
-### 🌙 Modern User Experience
-- Light/Dark mode support.
-- Smooth animations and transitions.
-- Clean and intuitive interface.
-- Loading skeletons for better UX.
+# 🌟 Core Functionalities
+
+* User Authentication
+* Role-Based Dashboard
+* Artwork CRUD
+* Admin Panel
+* Subscription Management
+* Purchase History
+* Protected API
+* Analytics Dashboard
+* Responsive Design
+* Dark/Light Theme
+* Loading Skeletons
+* Secure Backend APIs
 
 ---
 
-## 🛠️ Technologies Used
+# 🚀 Future Improvements
 
-### Frontend
-- Next.js
-- React.js
-- Tailwind CSS
-- HeroUI
-- React Hot Toast
-- Lucide React
-
-### Backend
-- Node.js
-- Express.js
-
-### Database
-- MongoDB
-
-### Authentication & Security
-- Better Auth / JWT
-- Protected Routes
-- Middleware Authorization
-
-### Deployment
-- Vercel (Client)
+* Online Payment Integration
+* AI Artwork Recommendations
+* Review & Rating System
+* Advanced Search & Filtering
+* Real-Time Notifications
+* Revenue Analytics
+* Wishlist Synchronization
+* Artwork Comments
+* Artist Verification System
+* Social Sharing Features
+* Multi-language Support
 
 ---
 
-## 📂 Core Functionalities
+# 🔗 Resources
 
-- ✅ User Authentication
-- ✅ Role-Based Dashboard
-- ✅ Admin Panel (User & Artwork Management)
-- ✅ Artwork CRUD Operations
-- ✅ Purchase History Tracking
-- ✅ Subscription Management
-- ✅ Analytics Dashboard
-- ✅ Protected API Routes
-- ✅ Responsive UI
-- ✅ Dark/Light Theme
-- ✅ Loading Skeletons
-- ✅ Secure Backend APIs
+* **Live Site:** https://arthub-client-ten.vercel.app/
+* **Client Repository:** *Add GitHub Link*
+* **Server Repository:** *Add GitHub Link*
 
 ---
 
-## 🚀 Future Improvements
+# 👨‍💻 Author
 
-- Online payment integration.
-- Advanced revenue analytics.
-- Real-time notifications system.
-- Review and rating system.
-- AI-based artwork recommendations.
-- Advanced search and filtering.
-- Dispute/report system for users.
+**MD Sumon Ali**
+
+Frontend / MERN Stack Developer
+
+Feel free to contribute, fork, or star this repository if you find it helpful.
